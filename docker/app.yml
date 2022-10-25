@@ -1,0 +1,15 @@
+version: '2'
+services:
+  fx-price-handler-app:
+    image: patrykkrawczyk/fx-price-handler-app
+    build:
+      context: ..
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://fx-price-handler-db:5432/fxpricehandler
+    ports:
+      - 8080:8080
+  fx-price-handler-db:
+    extends:
+      file: postgresql.yml
+      service: fx-price-handler-db

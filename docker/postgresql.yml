@@ -1,0 +1,10 @@
+version: '2'
+services:
+  fx-price-handler-db:
+    image: postgres:12.3
+    environment:
+      - POSTGRES_USER=fxpricehandler
+      - POSTGRES_PASSWORD=
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432:5432
