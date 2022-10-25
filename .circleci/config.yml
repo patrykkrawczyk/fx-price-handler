@@ -24,16 +24,26 @@ jobs:
       - run:
           name: Unpack fat jar
           command: mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
-      - run:
-          name: Build docker image
-          command: docker compose -f docker/app.yml build
       - persist_to_workspace:
           root: .
           paths:
             - target/dependency/*
             - Dockerfile
 
+  build-docker:
+    docker:
+      - image: cimg/base:2022.06
+    steps:
+      - setup_remote_docker:
+          version: 20.10.14
+      - attach_workspace:
+          at: .
+      - run: docker build -t patrykkrawczyk/fx-price-handler-app:$CIRCLE_BRANCH .
+
 workflows:
   compile-test-package:
     jobs:
       - compile-test-package
+      - build-docker:
+          requires:
+            - compile-test-package
